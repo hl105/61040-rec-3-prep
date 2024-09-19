@@ -1,5 +1,6 @@
 import { SessionData } from "express-session";
 import { UnauthenticatedError } from "./errors";
+import {NotAllowedError} from "./errors";
 
 export type SessionDoc = SessionData;
 
@@ -24,6 +25,9 @@ export default class SessioningConcept {
     // Hint: Take a look at how the "end" function makes sure the user is logged in. Keep in mind that a
     // synchronization like starting a session should just consist of a series of actions that may throw
     // exceptions and should not have its own control flow.
+    if (session.user) {
+      throw new NotAllowedError("Already logged in!");
+    }
     session.user = username;
   }
 
